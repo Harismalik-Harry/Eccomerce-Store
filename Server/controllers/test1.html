@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Product</title>
+</head>
+<body>
+  <h1>Add Product</h1>
+  <form id="productForm" enctype="multipart/form-data">
+    <label>
+      Name:
+      <input type="text" name="name" required>
+    </label>
+    <br>
+    <label>
+      Description:
+      <textarea name="description" required></textarea>
+    </label>
+    <br>
+    <label>
+      Category Name:
+      <input type="text" name="category_name" required>
+    </label>
+    <br>
+    <label>
+      Subcategory Name:
+      <input type="text" name="subcategory_name" required>
+    </label>
+    <br>
+    <label>
+      Price:
+      <input type="number" name="price" required>
+    </label>
+    <br>
+    <label>
+      Stock Quantity:
+      <input type="number" name="stock_quantity" required>
+    </label>
+    <br>
+    <label>
+      Attribute Values (comma-separated: name:value):
+      <input type="text" name="attributeValues">
+    </label>
+    <br>
+    <label>
+      Images:
+      <input type="file" name="files" multiple>
+    </label>
+    <br>
+    <button type="submit">Add Product</button>
+  </form>
+
+  <script>
+   document.getElementById('productForm').addEventListener('submit', async function (e) {
+  e.preventDefault();
+  
+  const formData = new FormData(e.target);
+  
+  // Process attributeValues into a suitable format
+  const attributeValuesInput = formData.get('attributeValues');
+  if (attributeValuesInput) {
+    const attributes = attributeValuesInput.split(',').map(attr => {
+      const parts = attr.split(':');
+      if (parts.length === 2) {
+        return [parts[0].trim(), parts[1].trim()];
+      } else {
+        console.warn(`Invalid attribute format: "${attr}"`);
+        return null; // Skip invalid entries
+      }
+    }).filter(attr => attr !== null); // Remove null entries
+
+    formData.delete('attributeValues');
+    attributes.forEach(([name, value]) => {
+      formData.append('attributeValues[]', JSON.stringify([name, value]));
+    });
+  }
+
+  try {
+    const response = await fetch('http://localhost:3000/api/products', { // Adjust to your API endpoint
+      method: 'POST',
+      body: formData,
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      alert(result.message);
+    } else {
+      const error = await response.json();
+      alert(`Error: ${error.error}`);
+    }
+  } catch (error) {
+    console.error('Error adding product:', error);
+    alert('An unexpected error occurred.');
+  }
+});
+  </script>
+</body>
+</html>
