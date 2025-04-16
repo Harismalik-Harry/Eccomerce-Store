@@ -129,3 +129,31 @@ export const getCartItemsByCartId = async (cartId) => {
     if (connection) connection.release();
   }
 };
+export const getCartItemsByUserId=async(userId)=>{
+  let connection;
+  try{
+    connection=await getConnection();
+    const [rows]=await connection.execute('Select * from Cart where customer_id=?',[userId]);
+    if(rows.length===0){
+      return null;
+    }
+    const cartId=rows[0].cart_id;
+    const cartItems=await getCartItemsByCartId(cartId);
+    return cartItems;
+  }
+  catch(error){
+    throw new Error("Error retrieving Cart_Items: " + error.message);
+  }
+  finally{
+    if(connection) connection.release();
+  }
+}
+
+const calculateTotalAmount=async(cartItems)=>{
+  let totalAmount=0;
+  for(const item of cartItems){
+    const product=await getProductById(item.product_id);
+    totalAmount+=product.price*item.quantity;
+  }
+  return totalAmount;
+} 

@@ -65,6 +65,23 @@ export const getOrderById = async (orderId) => {
   }
 };
 
+export const getOrdersByUserId=async(userId)=>{
+  let connection;
+  try{
+    connection=await getConnection();
+    const [rows]=await connection.execute('Select * from Order where customer_id=?',[userId]);
+    if(rows.length===0){
+      return null;
+    }
+    return rows;
+  }
+  catch(error){
+    throw new Error("Error retrieving Orders: " + error.message);
+  }
+  finally{
+    if(connection) connection.release();
+  }
+  }
 
 export const insertIntoOrderItem = async (
   orderId,

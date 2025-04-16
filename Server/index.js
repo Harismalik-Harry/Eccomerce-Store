@@ -17,7 +17,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // Middleware configuration
-app.use(cors({ credentials: true, origin: "http://localhost:3000" })); // Adjust origin to match your frontend URL
+app.use(cors({ credentials: true, origin: "http://localhost:5173" })); // Adjust origin to match your frontend URL
 
 app.use(bodyParser.json({ limit: "10mb" }));
 app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
@@ -26,11 +26,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Route configuration
-app.use("/customer", customerRoutes);
-app.use("/seller", sellerRoutes);
-app.use("/admin", adminRoutes);
-app.use("/auth", authRoutes);
-app.use('/api',api)
+app.use("/api/customer", customerRoutes);
+app.use("/api/seller", sellerRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/auth", authRoutes);
+app.use('/api/product',api)
 // Default route for testing
 app.get("/", (req, res) => {
   res.send("Server is running!");

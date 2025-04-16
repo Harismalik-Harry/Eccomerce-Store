@@ -40,3 +40,20 @@ const [result] = await connection.execute(
     connection.release();
  }
 };
+export const getUserById = async (userId) => {
+  const connection = await getConnection();
+  try {
+    const [rows] = await connection.execute(
+      "SELECT * FROM User WHERE user_id = ?",
+      [userId]
+    );
+    return rows.length > 0 ? rows[0] : null;
+  } catch (error) {
+    throw error;
+  } finally {
+    if (connection) {
+      connection.release(); // Ensure connection is properly released
+    }
+  }
+};
+

@@ -3,12 +3,13 @@ export const addProduct = async (
   connection,
   name,
   description,
-  subcategoryId
+  category_id,
+  price,
 ) => {
   try {
     const [result] = await connection.execute(
-      "insert into product (name,description,subcategory_id)  values (?,?,?)",
-      [name, description, subcategoryId]
+      "insert into product (name,description,category_id,price)  values (?,?,?,?)",
+      [name, description, category_id, price]
     );
     return result.insertId;
   } catch (error) {
@@ -126,7 +127,6 @@ export const getAttributeByName = async (connection, name) => {
       "select * from Product_Attribute where name = ? ",
       [name]
     );
-    console.log(result);
     return result;
   } catch (error) {
     throw new Error("Error Fetching in Attribute Name");

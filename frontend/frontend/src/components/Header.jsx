@@ -1,34 +1,37 @@
 import React, { useState } from "react";
-import Logo from "./Logo";
 import { IoSearch } from "react-icons/io5";
 import { FiMenu, FiX } from "react-icons/fi";
-
+import { Store } from "lucide-react";
+import { Menu } from "lucide-react";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
     <header className="h-16 shadow-md bg-white">
-      <div className="h-full mx-auto flex items-center container px-4 justify-between">
+      <div className="container mx-auto h-full flex items-center px-4 justify-between">
         {/* Logo Section */}
-        <div>
-          <Logo w={90} h={50} />
+        <div className="flex items-center">
+          <Store size={36} />
+          <p className="text-2xl sm:text-3xl mx-3 font-semibold">
+            Hackoo Store
+          </p>
         </div>
 
         {/* Search Bar */}
         <div
           className={`${
             isSearchOpen ? "flex" : "hidden"
-          } sm:flex items-center w-full justify-between max-w-sm border rounded-full focus-within:shadow pl-2`}
+          } sm:flex items-center w-full max-w-sm border rounded-full focus-within:shadow-md pl-2`}
         >
           <input
             type="text"
             placeholder="Search Product Here"
-            className="w-full outline-none"
+            className="w-full outline-none px-2 py-1"
           />
-          <div className="text-lg min-w-[40px] h-8 bg-black text-white flex items-center justify-center rounded-r-full">
+          <button className="text-lg min-w-[40px] h-8 bg-black text-white flex items-center justify-center rounded-r-full">
             <IoSearch />
-          </div>
+          </button>
         </div>
 
         {/* Mobile Search Toggle */}
@@ -42,7 +45,7 @@ const Header = () => {
         {/* Navigation / Menu */}
         <div className="relative">
           {/* Desktop View */}
-          <div className="hidden sm:flex space-x-4">
+          <div className="hidden sm:flex space-x-6">
             <a href="#" className="text-gray-700 hover:text-black">
               Account
             </a>
@@ -55,18 +58,16 @@ const Header = () => {
           </div>
 
           {/* Mobile View */}
-          <div className="sm:hidden flex items-center">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-2xl text-gray-700"
-            >
-              {isMenuOpen ? <FiX /> : <FiMenu />}
-            </button>
-          </div>
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="sm:hidden text-2xl text-gray-700 ml-3"
+          >
+            {isMenuOpen ? <FiX /> : <FiMenu />}
+          </button>
 
           {/* Dropdown Menu for Mobile */}
           {isMenuOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-10">
+            <div className="absolute right-0 mt-3 w-48 bg-white rounded-lg shadow-lg z-10">
               <a
                 href="#"
                 className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
