@@ -11,7 +11,7 @@ import cors from "cors";
 import api from './routes/productRoute.js'
 import multer from "multer";
 dotenv.config(); // Load environment
-
+import { uploadImage } from "./utils/cloudinaryUtils.js";
 const app = express();
 
 const port = process.env.PORT || 5000;
@@ -35,6 +35,9 @@ app.use('/api/product',api)
 app.get("/", (req, res) => {
   res.send("Server is running!");
 });
+// app.get("/cat",(req,res)=>{
+
+// })
 
 // Database connection and server startup
 (async () => {

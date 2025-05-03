@@ -114,10 +114,8 @@ export const updateProductAttributes = async (
 ) => {
   for (const { attribute_id, value } of attributes) {
     await connection.execute(
-      `INSERT INTO Product_Attribute_Value (product_id, attribute_id, value)
-      VALUES (?, ?, ?)
-      ON DUPLICATE KEY UPDATE value = VALUES(value)`,
-      [productId, attribute_id, value]
+      `Update Product_Attribute_Value set value = ? where attribute_id = ? and product_id = ? `,
+      [value, attribute_id, productId]
     );
   }
 };

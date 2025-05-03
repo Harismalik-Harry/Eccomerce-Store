@@ -3,19 +3,21 @@ import { Link } from "react-router-dom";
 import ProductList from "../../components/seller/ProductList";
 import axiosInstance from "../../lib/axios";
 import { useAuthStore } from "../../store/useAuthStore";
-
+import { useNavigate } from "react-router-dom";
 const Products = () => {
   const [products, setProducts] = useState([]);
   const { authUser } = useAuthStore();
   const [refresh, setRefresh] = useState(false); // ✅ Refresh state
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const response = await axiosInstance.get(
           `/product/getproducts/${authUser.user_id}`
         );
+        console.log(response.data.products)
         setProducts(response.data.products);
+        console.log(products);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -33,20 +35,11 @@ const Products = () => {
     }
   };
 
-  const handleEdit = async (product) => {
-    try {
-      await axiosInstance.put(
-        `/product/edit/${authUser.user_id}/${product.product_id}`,
-        {
-          ...product,
-        }
-      );
-      setRefresh((prev) => !prev); // ✅ Trigger refresh after edit
-    } catch (error) {
-      console.error("Error editing product:", error);
-    }
+  const handleEdit = (product) => {
+    navigate(`/seller/edit-product/${product.product_id}`, {
+      state: { product },
+    });
   };
-
   return (
     <div className="p-6">
       <div className="flex justify-end mb-6">

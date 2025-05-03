@@ -3,6 +3,11 @@ import {
   addProduct,
   deleteProduct,
   getAttributes,
+  getCategories,
+  getCategoriesWithPicture,
+  getProductbyCategoryID,
+  getProducts,
+  getProductsbyId,
   updateProduct,
 } from "../controllers/productController.js";
 import getProductsBySeller from "../controllers/productController.js";
@@ -18,7 +23,7 @@ router.post(
   "/add-product",
   authenticateJWT,
   authorizeRole("seller"),
-  upload.array("files", 10),
+  upload.array("images", 10),
   addProduct
 );
 
@@ -35,11 +40,17 @@ router.get(
   getProductsBySeller
 );
 router.patch(
-  "/products/:productId",
+  "/update-products/:productId",
   authenticateJWT,
   authorizeRole("seller"),
+  upload.array("images", 10),
   updateProduct
 );
+router.get("/getproductsbycategory/:id",getProductbyCategoryID)
 router.get('/getAttributes',authenticateJWT,authorizeRole('seller'),getAttributes)
+router.get("/getcategories",authenticateJWT,getCategories);
+router.get("/getcategorieswithpicture", getCategoriesWithPicture);
+router.get("/getproducts",getProducts)
+router.get("/getproduct/:id", getProductsbyId);
 
 export default router;

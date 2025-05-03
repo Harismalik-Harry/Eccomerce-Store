@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { FiMenu, FiX } from "react-icons/fi";
-import { Store } from "lucide-react";
-import { Menu } from "lucide-react";
+import { Store, ShoppingCart } from "lucide-react";
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -34,18 +34,23 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Mobile Search Toggle */}
-        <button
-          onClick={() => setIsSearchOpen(!isSearchOpen)}
-          className="sm:hidden text-2xl text-gray-700"
-        >
-          <IoSearch />
-        </button>
+        {/* Right Side Nav */}
+        <div className="flex items-center space-x-4">
+          {/* Mobile Search Toggle */}
+          <button
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            className="sm:hidden text-2xl text-gray-700"
+          >
+            <IoSearch />
+          </button>
 
-        {/* Navigation / Menu */}
-        <div className="relative">
-          {/* Desktop View */}
-          <div className="hidden sm:flex space-x-6">
+          {/* Cart Icon */}
+          <a href="/cart" className="text-gray-700 hover:text-black">
+            <ShoppingCart size={24} />
+          </a>
+
+          {/* Desktop Navigation */}
+          <div className="hidden sm:flex space-x-6 items-center">
             <a href="#" className="text-gray-700 hover:text-black">
               Account
             </a>
@@ -55,19 +60,25 @@ const Header = () => {
             <a href="#" className="text-gray-700 hover:text-black">
               Contact
             </a>
+            <a
+              href="/seller"
+              className="bg-black text-white px-4 py-1 rounded-full hover:bg-gray-800 transition"
+            >
+              Become a Seller
+            </a>
           </div>
 
-          {/* Mobile View */}
+          {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="sm:hidden text-2xl text-gray-700 ml-3"
+            className="sm:hidden text-2xl text-gray-700"
           >
             {isMenuOpen ? <FiX /> : <FiMenu />}
           </button>
 
-          {/* Dropdown Menu for Mobile */}
+          {/* Mobile Dropdown Menu */}
           {isMenuOpen && (
-            <div className="absolute right-0 mt-3 w-48 bg-white rounded-lg shadow-lg z-10">
+            <div className="absolute right-4 top-16 w-48 bg-white rounded-lg shadow-lg z-10">
               <a
                 href="#"
                 className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
@@ -85,6 +96,12 @@ const Header = () => {
                 className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
               >
                 Contact
+              </a>
+              <a
+                href="/seller"
+                className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+              >
+                Become a Seller
               </a>
             </div>
           )}

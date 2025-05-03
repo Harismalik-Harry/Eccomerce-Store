@@ -5,7 +5,7 @@ import { useAuthStore } from "./store/useAuthStore";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./components/NotFound";
-
+import UpdateProductForm from "./pages/Seller/UpdateProductForm.jsx";
 import CustomerLayout from "./layout/customerLayout";
 import AuthLayout from "./layout/authLayout";
 import SellerLayout from "./layout/sellerLayout";
@@ -23,6 +23,7 @@ import Revenue from "./pages/Seller/Revenue";
 import Profile from "./pages/Seller/Profile";
 import { Loader } from "lucide-react";
 import Logout from "./pages/Seller/Logout.jsx";
+import ProductDetail from "./pages/Customer/ProductDetail.jsx";
 
 const App = () => {
   const { checkAuth, authUser, isCheckingAuth } = useAuthStore();
@@ -43,10 +44,13 @@ const App = () => {
     <>
       <Routes>
         {/* Home Route (Public) */}
-        <Route path="/" element={<CustomerLayout />}>
+        <Route
+          path="/"
+          element={<CustomerOrPublicRoute element={<CustomerLayout />} />}
+        >
           <Route index element={<Home />} />
+          <Route path="products/:id" element={<ProductDetail />} />
         </Route>
-
         {/* Authentication Routes (Redirect if Logged In) */}
         <Route path="auth" element={<AuthLayout />}>
           <Route path="logout" element={<Logout />} />
@@ -78,6 +82,11 @@ const App = () => {
           <Route index element={<Dashboard />} />
           <Route path="add-product" element={<AddProduct />} />
           <Route path="products" element={<Products />} />
+          <Route
+            path="edit-product/:ProductId"
+            element={<UpdateProductForm />}
+          />{" "}
+          {/* ← Add this */}
           <Route path="orders" element={<Order />} />
           <Route path="revenue" element={<Revenue />} />
           <Route path="profile" element={<Profile />} />
@@ -94,3 +103,12 @@ const App = () => {
 };
 
 export default App;
+const CustomerOrPublicRoute = ({ element }) => {
+  const { authUser } = useAuthStore();
+
+  if (authUser?.role === "seller") {
+    return <Navigate to="/seller" replace />;
+  }
+
+  return element;
+};

@@ -5,7 +5,7 @@ import { getUserById } from "../models/userModel.js";
 dotenv.config();
 export const authenticateJWT = async(req, res, next) => {
   const token = req.cookies?.token || req.headers.authorization?.split(" ")[1];
-  console.log(token)
+  // console.log(token)
   if (!token) {
     return res.status(401).json({ message: "Access Denied" });
   }
